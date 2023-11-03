@@ -12,10 +12,10 @@ pipeline {
        FUSION_IMG = "${PREFIX_IMAGE}/${IMAGE_NAME}:${IMAGE_TAG}"
 
      }
-     agent none
+     agent {label 'docker'}
      stages {
          stage('Build image') {
-             agent any
+             agent {label 'docker'}
              steps {
                 script {
                   sh 'docker build -t ${PREFIX_IMAGE}/$IMAGE_NAME:$IMAGE_TAG .'
@@ -23,7 +23,7 @@ pipeline {
              }
         }
         stage('Run container based on builded image') {
-            agent any
+            agent {label 'docker'}
             steps {
                script {
                  sh '''
@@ -37,7 +37,7 @@ pipeline {
             }
        }
        stage('Test image') {
-           agent any
+           agent {label 'docker'}
            steps {
               script {
                 sh '''
@@ -48,7 +48,7 @@ pipeline {
            }
       }
       stage('Clean Container') {
-          agent any
+          agent {label 'docker'}
           steps {
              script {
                sh '''
@@ -60,7 +60,7 @@ pipeline {
      }         
           
      stage ('Login and Push Image on docker hub') {
-          agent any
+          agent {label 'docker'}
           environment {
              DOCKERHUB_PASSWORD  = credentials('identifiant_DockerHub')
         }            
@@ -75,7 +75,7 @@ pipeline {
       }    
      
      stage('STAGING - Deploy app') {
-      agent any
+      agent {label 'docker'}
       steps {
           script {
             sh """
@@ -90,7 +90,7 @@ pipeline {
        when {
               expression { GIT_BRANCH == 'origin/main' }
             }
-      agent any
+      agent {label 'docker'}
       environment {
            PLATEFORM_API_TOKEN  = credentials('plateform.sh_api_key')
         }       
