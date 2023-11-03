@@ -29,7 +29,7 @@ pipeline {
                  sh '''
                     echo "Clean Environment"
                     docker container stop $CONTAINER_NAME || echo "container does not exist"
-                    docker container $CONTAINER_NAME || echo "container does not exist"
+                    docker container rm $CONTAINER_NAME || echo "container does not exist"
                     docker run --name $CONTAINER_NAME -d -p ${PORT_EXPOSED}:${INTERNAL_PORT} -e PORT=${INTERNAL_PORT} ${PREFIX_IMAGE}/$IMAGE_NAME:$IMAGE_TAG
                     sleep 5
                  '''
