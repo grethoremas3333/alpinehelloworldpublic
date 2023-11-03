@@ -1,2 +1,0 @@
-# alpinehelloworldpublic
-alpinehelloworld version publique
